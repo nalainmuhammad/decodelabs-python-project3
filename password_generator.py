@@ -1,7 +1,6 @@
 """
-+======================================================================+
-|              CRYPTOGRAPHIC RANDOM PASSWORD GENERATOR                  |
-|          Enterprise-Grade CLI Security Tool  .  v1.0.0                |
+             CRYPTOGRAPHIC RANDOM PASSWORD GENERATOR                  
+          Enterprise-Grade CLI Security Tool  .  v1.0.0                
 +======================================================================+
 
 Architecture : IPO (Input -> Process -> Output) with strict decoupling
@@ -9,24 +8,17 @@ Security     : secrets.choice() -- CSPRNG backed by OS entropy pool
 Compliance   : NIST SP 800-63B (2024) -- minimum 15-character passwords
 Efficiency   : O(N) string assembly via ''.join() on generator expression
 Dependencies : Standard library only (secrets, string, math, os, sys)
-
-Author       : Senior Cybersecurity Backend Engineer
 """
 
-import secrets   # CSPRNG -- uses os.urandom() under the hood, not Mersenne Twister
-import string    # Pre-built, auditable character pools (no manual typo risk)
-import math      # log2() for Shannon entropy calculation
-import os        # os.system() for cross-platform terminal clearing
-import sys       # stdout reconfiguration for UTF-8 on Windows
+import secrets   
+import string    
+import math      
+import os       
+import sys      
 
-
-# =====================================================================
-# WINDOWS UTF-8 COMPATIBILITY
-# =====================================================================
+    
 # Windows consoles default to cp1252/cp437 which cannot render Unicode
 # box-drawing characters. We force UTF-8 on both the Python I/O layer
-# and the Windows console code page to ensure consistent rendering.
-# =====================================================================
 
 if os.name == "nt":
     os.system("chcp 65001 >nul 2>&1")  # Set Windows console to UTF-8 silently
@@ -80,9 +72,7 @@ DIVIDER_LIGHT = "-" * 62
 DIVIDER_DOT   = "." * 62
 
 
-# =====================================================================
-# UTILITY FUNCTIONS
-# =====================================================================
+    # UTILITY FUNCTIONS
 
 
 def clear_screen():
@@ -120,18 +110,7 @@ def print_section_header(title):
 
 def get_password_length():
     """
-    Prompts the user for a password length and validates it.
-
-    Validation rules:
-      1. Must be a valid integer (rejects floats, strings, empty input).
-      2. Must be >= MIN_PASSWORD_LENGTH (NIST 2024 compliance).
-      3. Must be <= MAX_PASSWORD_LENGTH (prevents resource abuse).
-
-    Returns:
-        int: The validated password length.
-
-    Raises:
-        SystemExit: If the user sends EOF (Ctrl+D / Ctrl+Z) to abort.
+        Prompts the user for a password length and validates it.
     """
     print_section_header("INPUT  .  Password Configuration")
     print(f"\n{Style.SUBTLE}  Minimum length: {MIN_PASSWORD_LENGTH} characters (NIST 2024 standard){Style.RESET}")
